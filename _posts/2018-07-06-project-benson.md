@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Metis Project 1: Analyzing MTA Data
+title: Metis Project 1 - Analyzing MTA Data
 ---
 ### The Setup
 
