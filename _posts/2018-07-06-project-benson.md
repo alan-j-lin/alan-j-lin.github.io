@@ -14,7 +14,15 @@ In being a group project the group was immediately divided between the group tha
 
 Meet Becky. She is 25 years old and both lives and works in New York City. Becky works as a software engineer for one of the top tech firms in the city and has a passion for dogs and coffee.  
 
-With the target portfolio in mind, we decided to choose our outside data sources to optimize for the number of Beckys.    
+<img src="https://c1.staticflickr.com/1/629/21911138603_943ef22814_b.jpg" alt="Her name isn't actually Becky" width="220px"/>
+
+With the target portfolio in mind, we decided to choose our outside data sources to optimize for the number of Beckys. 
+
+| Parameter   | Corollary              | Data Source         |
+| :---------: | :----------:           | :---------:         |
+| Gender      | Number of Women        | US Census 2010 Data |
+| Interests   | Starbucks              | Google Places API   |
+| Work        | Tech Company Locations | Google Maps API     |
 
 ### Results
 
