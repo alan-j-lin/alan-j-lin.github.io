@@ -12,17 +12,35 @@ In being a group project the group was immediately divided between the group tha
 
 #### The Target: Becky  
 
-Meet Becky. She is 25 years old and both lives and works in New York City. Becky works as a software engineer for one of the top tech firms in the city and has a passion for dogs and coffee.  
+Meet Becky, she is 25 years old and both lives and works in New York City. Becky works as a software engineer for one of the top tech firms in the city and has a passion for dogs and coffee.  
 
 <img src="https://c1.staticflickr.com/1/629/21911138603_943ef22814_b.jpg" alt="Her name isn't actually Becky" width="220px"/>
 
-With the target portfolio in mind, we decided to choose our outside data sources to optimize for the number of Beckys. 
+With the target portfolio in mind, we decided to focus on parameters associated with demographics, interests, and work to incorporate in order to maximize the number of Beckys. A designated corollary, corresponding data source, and scoring metric was summarized as below:
 
-| Parameter   | Corollary              | Data Source         |
-| :---------: | :----------:           | :---------:         |
-| Gender      | Number of Women        | US Census 2010 Data |
-| Interests   | Starbucks              | Google Places API   |
-| Work        | Tech Company Locations | Google Maps API     |
+| Parameter   | Corollary              | Data Source         | Scoring Metric    |
+| :---------: | :----------:           | :---------:         | :-------------:   |
+| Demographics| Gender Distribution    | US Census 2010 Data | Number of women living in area |
+| Interests   | Starbucks              | Google Maps API     | Aggregate inverse distance to Starbucks locations within walking distance |
+| Work        | Tech Companies         | Google Maps API     | Aggregate inverse distance to top 21 tech companies |
+
+#### Gender Distribution  
+
+#### Starbucks  
+
+#### Tech Companies  
+
+From web scraping this article: [Top 21 Tech Companies] we were able to generate a list of 21 tech companies that we wanted to target in New York City. Utilizing the tech company names as key words to search on, we again utilized the Google Maps and Google Places APIs to generate the following map:
+
+##### Map  
+
+
+
+
+
+
+
+[Top 21 Tech Companies]: http://www.businessinsider.com/amazon-google-apple-most-valuable-tech-brands-america-2018-6
 
 ### Results
 
