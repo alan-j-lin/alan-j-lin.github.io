@@ -1,7 +1,9 @@
 ---
 layout: post
-title: Metis Project 1 - Analyzing MTA Data
+title: Analyzing NYC MTA Data (Metis Project 1)
 ---
+[Repo]: https://github.com/alan-j-lin/NYC_MTA_DataAnalysis
+
 ### The Setup
 
 In the first week of the Metis Bootcamp, we were assigned a group project. This project consisted of being hired by the WomenTechWomenYes (WTWY) organization to help organize a list of optimal flyering locations for their upcoming summer charity gala in NYC. The only requirement was that we had to utilize the MTA turnstile data provided through the NYC Open Data Portal.
@@ -47,11 +49,6 @@ From web scraping this article: [Top 21 Tech Companies] we were able to generate
 
 
 
-
-
-
-
-
 [Top 21 Tech Companies]: http://www.businessinsider.com/amazon-google-apple-most-valuable-tech-brands-america-2018-6
 
 ### Results
@@ -62,4 +59,4 @@ Go to the place with the most people.
 
 ### Recommendation
 
-Please hire **me**.
+### Modules Utilized  
