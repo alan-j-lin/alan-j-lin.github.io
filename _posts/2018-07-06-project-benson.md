@@ -43,7 +43,9 @@ Some of the tools that we were experiment with were the [python-google-places] a
 
 From the MTA data, the other half of the group was able to identify the following 20 subway stations to be of interest according to their analysis:
 
-![](./public/SubwayStations.jpeg){: height="1200px" width="1200px"}
+[SubwayStations]  
+
+![SubwayStations](./public/SubwayStations.jpeg){: height="1200px" width="1200px"}
 
 #### Gender Distribution  
 
