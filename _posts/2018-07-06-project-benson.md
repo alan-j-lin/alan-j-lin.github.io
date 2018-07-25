@@ -8,6 +8,7 @@ In the first week of the Metis Bootcamp, we were assigned a group project. This 
 
 In being a group project the group was immediately divided between the group that was going to handle the MTA data and people that were going to help merge that with outside data sources, I was assigned to the latter. As WTWY was an organization focused on increasing the amount of women in tech, we decided to first idealize the type of person that we would try to target to attend this gala.  
 
+
 ### Analysis
 
 #### The Target: Becky  
@@ -23,6 +24,12 @@ While theoretical as a person, Becky was the type of person we decided to target
 | Demographics| Gender Distribution    | US Census 2010 Data | Number of women living in area |
 | Interests   | Starbucks              | Google Maps API     | Aggregate inverse distance to Starbucks locations within walking distance |
 | Work        | Tech Companies         | Google Maps API     | Aggregate inverse distance to top 21 tech companies |
+
+#### Identified Subway Stations
+
+From the MTA data, the other half of the group was able to identify the following 20 subway stations to be of interest according to their analysis:
+
+<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/SubwayStations.jpeg" alt="Identified Subway Stations" width="600px" />
 
 #### Gender Distribution  
 
