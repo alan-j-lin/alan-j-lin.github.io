@@ -2,7 +2,8 @@
 layout: post
 title: Analyzing NYC MTA Data (Metis Project 1)
 ---
-[Repo]: https://github.com/alan-j-lin/NYC_MTA_DataAnalysis
+
+[repo]: https://github.com/alan-j-lin/NYC_MTA_DataAnalysis
 
 ### The Setup
 
@@ -17,6 +18,8 @@ In being a group project the group was immediately divided between the group tha
 
 <img src="https://c1.staticflickr.com/1/629/21911138603_943ef22814_b.jpg" alt="Her name isn't actually Becky" width="200px" />
 
+
+
 Meet **Becky**, she is 25 years old and both lives and works in New York City. Becky works as a software engineer for one of the top tech firms in the city and has a passion for dogs and coffee.  
 
 While theoretical as a person, Becky was the type of person we decided to target. With her characteristics we decided to focus on parameters associated with demographics, interests, and work to incorporate in order to maximize the number of Beckys. A designated corollary, corresponding data source, and scoring metric was summarized as below:
@@ -27,11 +30,22 @@ While theoretical as a person, Becky was the type of person we decided to target
 | Interests   | Starbucks              | Google Maps API     | Aggregate inverse distance to Starbucks locations within walking distance |
 | Work        | Tech Companies         | Google Maps API     | Aggregate inverse distance to top 21 tech companies |
 
+#### Tools
+
+Some of the tools that we were experiment with were the [python-google-places] and [GeoPandas] packages. Python-google-places was a wrapper developed by slimkrazy for the GooglePlaces API while GeoPandas was a nice tool used to plot spatial information.
+
+[python-google-places]: https://github.com/slimkrazy/python-google-places
+
+[GeoPandas]: http://geopandas.org/index.html
+
+
 #### Identified Subway Stations
 
 From the MTA data, the other half of the group was able to identify the following 20 subway stations to be of interest according to their analysis:
 
 <img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/SubwayStations.jpeg" alt="Identified Subway Stations" width="1200px" />
+
+![](/public/SubwayStations.jpeg)
 
 #### Gender Distribution  
 
@@ -60,3 +74,7 @@ Go to the place with the most people.
 ### Recommendation
 
 ### Modules Utilized  
+
+All jupyter notebooks and data contained at the following [repo].
+
+[repo]: https://github.com/alan-j-lin/NYC_MTA_DataAnalysis
