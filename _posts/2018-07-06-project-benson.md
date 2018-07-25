@@ -48,7 +48,7 @@ From the MTA data, the other half of the group was able to identify the followin
 #### Gender Distribution  
 
 
-![][./public/GenderDistMap.jpeg]
+![](/public/GenderDistMap.jpeg)
 
 
 #### Starbucks  
@@ -57,9 +57,7 @@ From the MTA data, the other half of the group was able to identify the followin
 
 From web scraping this article: [Top 21 Tech Companies] we were able to generate a list of 21 tech companies that we wanted to target in New York City. Utilizing the tech company names as key words to search on, we utilized the Google Maps and Google Places APIs to cross reference if locations existed in NYC and used the geocoordinates to generate the following map:
 
-![][./public/TechMap.jpeg]
-
-
+![](/public/TechMap.jpeg)
 
 
 [Top 21 Tech Companies]: http://www.businessinsider.com/amazon-google-apple-most-valuable-tech-brands-america-2018-6
