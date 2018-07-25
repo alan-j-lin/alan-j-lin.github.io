@@ -43,10 +43,7 @@ Some of the tools that we were experiment with were the [python-google-places] a
 
 From the MTA data, the other half of the group was able to identify the following 20 subway stations to be of interest according to their analysis:
 
-![SubwayStations]  
-
-[SubwayStations]:./public/SubwayStations.jpeg
-{: height="1200px" width="1200px"}
+![SubwayStations](./public/SubwayStations.jpeg)
 
 #### Gender Distribution  
 
@@ -59,7 +56,7 @@ From the MTA data, the other half of the group was able to identify the followin
 
 From web scraping this article: [Top 21 Tech Companies] we were able to generate a list of 21 tech companies that we wanted to target in New York City. Utilizing the tech company names as key words to search on, we utilized the Google Maps and Google Places APIs to cross reference if locations existed in NYC and used the geocoordinates to generate the following map:
 
-<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/TechMap.jpeg" alt="Tech Map" width="600px" />
+<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/tree/master/public/TechMap.jpeg" alt="Tech Map" width="600px" />
 
 
 
