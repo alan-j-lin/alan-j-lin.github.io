@@ -29,7 +29,7 @@ While theoretical as a person, Becky was the type of person we decided to target
 
 From the MTA data, the other half of the group was able to identify the following 20 subway stations to be of interest according to their analysis:
 
-<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/SubwayStations.jpeg" alt="Identified Subway Stations" width="600px" />
+<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/SubwayStations.jpeg" alt="Identified Subway Stations" width="1200px" />
 
 #### Gender Distribution  
 
