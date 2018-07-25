@@ -26,7 +26,7 @@ While theoretical as a person, Becky was the type of person we decided to target
 
 #### Gender Distribution  
 
-<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/GenderDistMap.svg" alt="Tech Map" width="3000px" />
+<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/GenderDistMap.jpeg" alt="GenderDist Map" width="3000px" />
 
 
 #### Starbucks  
@@ -35,7 +35,7 @@ While theoretical as a person, Becky was the type of person we decided to target
 
 From web scraping this article: [Top 21 Tech Companies] we were able to generate a list of 21 tech companies that we wanted to target in New York City. Utilizing the tech company names as key words to search on, we utilized the Google Maps and Google Places APIs to cross reference if locations existed in NYC and used the geocoordinates to generate the following map:
 
-<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/TechMap.svg" alt="Tech Map" width="600px" />
+<img src="https://github.com/alan-j-lin/alan-j-lin.github.io/blob/master/public/TechMap.jpeg" alt="Tech Map" width="600px" />
 
 
 
@@ -56,4 +56,3 @@ Go to the place with the most people.
 ### Recommendation
 
 Please hire **me**.
-
