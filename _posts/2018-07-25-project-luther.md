@@ -15,9 +15,6 @@ Is the restaurant trying to upcharge you on things like decor or reputation, or 
     </font>
 </center>
 
-<br>
-
-
 I decided to design this model for my 2nd Metis project, where I would utilize linear regression to predict the price of a lunch dish based on the information that one could gather from the restaurant menu.
 
 ## Data
