@@ -1,19 +1,35 @@
 ---
 layout: post
-title: Predicting Lunch Price (Metis Project 2)
+title: Is That New Lunch Spot Overpriced?
 ---
 
-How many times have you gotten a restaurant recommendation from a friend or review, where the price of dishes when you sit down is significantly more expensive than what you had expected? Is it the case that the restaurant is ripping you off based on their reputation, or that the components of the dish justify that price? What if you had a model that could you help predict the likelihood of that?
+How many times have you gotten a restaurant recommendation where after sitting down and looking at the menu everything is significantly more expensive than what you had expected?
+Or the lunch spot you are at is offering a new special with an ingredient that you don't quite recognize, is it even worth trying?
 
-Such a model was what 2nd Metis project was based around, where I built a linear regression model to predict the price of a single dish at lunch based on the information that one could gather from the restaurant menu.
+Is the restaurant trying to upcharge you on things like decor or reputation, or that the components of the dish actually justify that price? What if you had a model that could you help predict the likelihood of that?
+
+<center>
+  <figure>
+      ![](/public/Project_Luther/sushiburrito.jpg)
+      <font size="2">
+      <figcaption> **$15** for a sushi burrito??? </figcaption>
+      </font>
+  </figure>
+</center>
+
+
+</b>
+
+
+I decided to design this model for my 2nd Metis project, where I would utilize linear regression to predict the price of a lunch dish based on the information that one could gather from the restaurant menu.
 
 ## Data
 
-To come up with a model to predict price, I decided that there were three types of data that required:
+To train this model, there were three types of data that were obtained:
 
 #### Restaurant Data
 
-To put constraints on types of restaurants the model would examine, I decided to focus on restaurants in San Francisco, CA. In turn, I decided to only look at 6 different cuisines that I felt were representative of different lunch choices in SF:
+To put constraints on types of restaurants for the dataset, only restaurants in San Francisco, CA were picked. Also these restaurants would focus on 6 types of cuisines that were a diverse representative of lunch choices in SF:
 
 1. American
 2. Mexican
@@ -22,79 +38,83 @@ To put constraints on types of restaurants the model would examine, I decided to
 5. Pakistani
 6. Creole & Cajun
 
-As there was no freely available database of restaurant menu data, I had to resort to scraping. Using [BeautifulSoup] I was able to retrieve the menu information for over 1000 restaurants in SF by scraping a restaurant menu aggregator. These 1000 restaurants in turn gave me over 16,000 data points for dishes at different price points.
+As there was no freely available database of restaurant menu data, I had to resort other tactics. Using [BeautifulSoup] (BS4) I was able to obtain the menu information for over 1000 restaurants in SF from a restaurant menu aggregator. These 1000 restaurants in turn gave me over 16,000 data points for dishes at different price points.
 
-![](alldatahist)
+![](/public/Project_Luther/AllDishPriceHist.png)
 
-[BeautifulSoup]: www.BeautifulSoup.com
+[BeautifulSoup]: https://www.crummy.com/software/BeautifulSoup/
 
 #### Ingredient Data
 
-In order to make sense of the restaurant text data, my model would need a reference list of important words. Thus, BeautifulSoup was used to scrap the [BBC ingredient] and [Foodwise] websites to build a base ingredient list which would be referenced by the model. From these two websites I was able to get a set of 600+ unique food-related nouns.
-
-[BBC ingredient]: www.bbc.co.uk/ingredient
-[Foodwise]: www.foodwise.com
+In order establish meaning from the restaurant menu text, my model would need a reference list of important words. Thus using BS4, I obtained a base ingredient list from some recipe related websites that contained 600+ unique food-related nouns.
 
 #### Demographic Data
 
-Contained in the restaurant data, there was also addresses and geolocation information. Thus, I was curious to see if there was any correlation between dish price and the neighborhood that each restaurant resided in. As a proxy for neighborhood, there was demographic data for each zipcode in SF from [US Census], specifically utilizing the 2016 American Community Survey (ACS) and the 2016 Economic Census.
+I was curious to see if there was any correlation between dish price and the neighborhood that each restaurant resided in. Luckily there were addresses and geolocation information for each restaurant in the dataset. As a proxy for neighborhood I used a restaurant's zipcode instead, as there was demographic data for each zipcode in SF from the [US Census]. I specifically used the 2016 American Community Survey (ACS) and the 2016 Economic Census.
 
-[US Census]: www.uscensus.gov
+[US Census]: https://www.census.gov/
+
+<center>
+  <figure>
+      ![](/public/Project_Luther/zipcodemap.jpg)
+      <font size="2">
+      <figcaption> There are over 20 zipcodes within just San Francisco </figcaption>
+      </font>
+  </figure>
+</center>
 
 
-## Exploratory Data Analysis
+## Exploratory Data Analysis (EDA)
 
 With the data in hand there were three aspects that I focused on during the EDA process:
 
 #### Data Cleaning
 
-In examining the raw scraped restaurant data there was some data cleaning necessary in order to make the analysis fruitful:
+In examining the raw data there was some necessary cleaning:
 
-1. Based on the menu layout at times there were dishes were prices were not listed. This was generally the case when dishes were all of the same price based on menu section (i.e. dim sum). For these dishes I ended up dropping their entries from the dataset.
+1. **Missing Info:** For certain entries, the dish price was not listed. This was generally the case when dishes were all grouped and set at the same price (i.e. dim sum). For these dishes I ended up dropping them from the dataset.
 
-2. Some dishes were much more expensive than expected and stuck out as outliers when looking at all of the prices as a whole. Digging in deeper, I discovered that many of these dishes were actually labeled as sharing platters or group meals. Because of this discrepancy in price, I ended up dropping these entries from the dataset.
+2. **Outliers**: Some dishes were much more expensive than expected based off their ingredients and stuck out as outliers. Digging in deeper, I discovered that many of these dishes were actually labeled as sharing platters or group meals. Because I was focusing on a meal for one, I ended up dropping these entries from the dataset.
 
 #### Data Cut
 
-As I wanted to restrict my model to predict the prices of dishes at lunch, I ended up removing any dishes that cost more than $20 or less than $7. However, even with this subset there were still more than 10000 data points.
+As I wanted to restrict my model to predict the prices of dishes at lunch, I ended up removing any dishes that cost more than $20 or less than $7. However, even with this subset there were still 10,000+ data points.
+
+![](/public/Project_Luther/SSDishPriceHist.png)
 
 #### Feature Generation
 
-With so much text gathered from the restaurant menus, there was a lot of room to do feature generation based on NLP. For this model, I ended up creating a few features:
+With the restaurant text gathered, there was flexibility in feature generation using NLP (Natural Language Processing) such as:
 
-1. By identifying nouns in the dish text and cross-referencing it with the base ingredient list, the model was able to identify food-related nouns. These nouns were then fed into NLTK's [WordNet] corpus reader to identify base words, this was done to account for tenses. These nouns were then our "ingredients".
+1. By identifying nouns in the dish text and cross-referencing with the base ingredient list, the model was able to identify food-related nouns. These nouns were then fed into NLTK's [WordNet] corpus reader to identify base words (needed to account for tenses). These nouns were our "ingredients" and each was assigned as a categorical variable.
 
-2. The frequency that each ingredient appeared in high-cost and low-cost dishes was used to generate a list of high-cost and low-cost ingredients based on our training set.
-
-3. Each ingredient and cuisine type was also used as a categorical dummy variable in the model.
+2. The frequency that each ingredient appeared in high-cost and low-cost dishes from the training set was used to generate a list of high-cost and low-cost ingredients. The frequency that these price-categorized ingredients appeared in each dish were also used as features in the model.
 
 [WordNet]: http://www.nltk.org/howto/wordnet.html
 
 ## Model Selection
 
-As price was what my model was trying to predict, the parameter I decided to optimize for was **root mean square error** (RMSE). RMSE was an appropriate measure because the RMSE value would be translated as the standard error for any predicted price from my model.
+As price was what my model's target variable, the parameter I decided to optimize for was **[RMSE]** (root mean square error). RMSE was the appropriate metric because the RMSE value would be translated as the standard error for any predicted price. As an example, if my model had a test RMSE of $2.00 and the predicted price was $4.00 that would mean my price prediction would be $4.00 $\pm$ $2.00
 
-In trying to improve my RMSE there were a couple of modifications that I did to my base linear regression model.
+In trying to improve my RMSE there were a couple of modifications that I did to my base linear regression model:
+
+[RMSE]: https://en.wikipedia.org/wiki/Root-mean-square_deviation
 
 #### Data Transformations
 
-As can be seen below, the pricing data was very skewed.
+As seen previously, the pricing data was very skewed. By applying a [Box-Cox transformation] I was able to transform the data to be more Gaussian in nature.
 
-![](hist)
-
-By applying a [Box-Cox transformation] we were able to transform the data to be more Gaussian in nature.
-
-![](bchist)
+![](/public/Project_Luther/BCSSDishPriceHist.png)
 
 [Box-Cox transformation]: https://en.wikipedia.org/wiki/Power_transform
 
 #### Regularization
 
-With about 600 starting features in my model, regularization was sorely needed in order to help reduce the amount of features present. By using Lasso regularization, I was able to reduce the amount of total features present in my model by 130. Most likely, if I was more aggressive in reducing the number of features during the cross-validation process these amount would have reduced further.
+With about 600 starting features in my model, regularization was sorely needed in order to help reduce the number of features. By using Lasso regularization, I was able to subtract 130 features from my model. Most likely, if I was more aggressive in reducing the number of features during the cross-validation process even more features would have been dropped.
 
 #### Important Features
 
-With regards to important features identified by the model, there a mixture of expected and unexpected results. The strongest predictive features were:
+With regards to the most predictive features, there a mixture of expected and unexpected results. The most predictive features were:
 
 | Feature             | Positive Weight | Negative Weight |
 | :-----------------: | :------------:| :--------------:|
@@ -103,28 +123,43 @@ With regards to important features identified by the model, there a mixture of e
 |Dish Text Length     |          X      |                 |
 |Restaurant Type      |                 | X               |
 
-While restaurant types (Mexican and Jerk) and specific ingredients were expectedly predictive, a real surprise was **dish text length**. Behind ingredients like crab, lobster, and duck dish text length was actually the 4th strongest positive predictor where it has a log-squared relation. I interpreted that made sense because more expensive restaurants would generally be more verbose and embellish dish descriptions.
+While restaurant types (Mexican and Jerk) and specific ingredients were expectedly predictive, a real surprise was **dish text length**. Behind expensive ingredients (like crab, lobster, and duck) dish text length was actually the 4th strongest positive predictor where it demonstrated a log-squared relation. That actually made sense because more expensive restaurants would generally be more verbose and embellish dish descriptions.
+
+One more note was that demographic features did not end up being particularly predictive, so any information regarding restaurant location ended up being dropped from the model.
 
 #### Model Performance
 
-My final model ended up having a train RMSE of **$2.44** and a test RMSE of **$2.63**. As both values are similar and the residual plots are similar in shape (as shown below), I believe my model was generalizing well and not overfitting. However there could have been improvements made to decrease RMSE.
+My final model ended up having a train RMSE of **$2.44** and a test RMSE of **$2.63**.
 
-![](trainimage)
+![](/public/Project_Luther/Train_Residual_Plot.png)
 
-![](testimage)
+![](/public/Project_Luther/Test_Residual_Plot.png)
+
+As both values are similar and the residual plots are similar in shape, I believe my model was generalizing well and not overfitting.
+
+So bringing this back to the original question, if you went to the restaurant *Best Mexican* and ordered a burrito that contained:
+
+* Steak
+* Salsa
+* Cheese
+* Tortilla
+* Beans  
+
+
+My model would predict a price of $7.80. If *Best Mexican* was charging anything more than **$10.43** then they would be ripping you off.
 
 ## Future Improvements
 
-With regards to improving my model if I had further time in the future, a couple of ideas would be to:
+If I had more time and could redo this model, a couple of improvements I think would further minimize the RMSE would be to:
 
 1. Capture more descriptive text features
-  * Descriptions on the cooking process, multi-word ingredients (i.e. goat cheese), and brand names aren't currently captured
-2. Temporal Features
-  * Different dishes take differing amounts of time, this labor cost is currently not captured in the price prediction
-3. Model Selection
+  * Cooking descriptors (fried vs. baked), multi-word ingredients (i.e. goat cheese), and brand names aren't currently captured
+2. Create temporal features
+  * Different groups of dishes take different amounts of time (i.e. burritos vs pies) and this labor cost is currently not captured in the price prediction.
+3. Select a better model
   * If I were to choose a different model I would utilize a Random Forest regressor due to the high number of categorical features in my model
   * Test RMSE using Random Forest is **$2.41**
 
-All jupyter notebooks and data contained at the following [repo].
+The code and data for this model are available at my [Github repo].
 
-  [repo]: https://github.com/alan-j-lin/lunch_price_prediction
+[Github repo]: https://github.com/alan-j-lin/lunch_price_prediction

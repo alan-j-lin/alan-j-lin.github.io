@@ -16,9 +16,18 @@ In being a group project the group was immediately divided between the group tha
 
 #### The Target: Becky  
 
-<img src="https://c1.staticflickr.com/1/629/21911138603_943ef22814_b.jpg" alt="Her name isn't actually Becky" width="200px" />
+</b>
 
+<center>
+  <figure>
+    <img src="https://c1.staticflickr.com/1/629/21911138603_943ef22814_b.jpg" alt="Her name isn't actually Becky" width="200px" />
+    <font size="2">
+    <figcaption> Her name isn't actually Becky </figcaption>
+    </font>
+  </figure>
+</center>
 
+</b>
 
 Meet **Becky**, she is 25 years old and both lives and works in New York City. Becky works as a software engineer for one of the top tech firms in the city and has a passion for dogs and coffee.  
 
@@ -43,12 +52,12 @@ Some of the tools that we were experiment with were the [python-google-places] a
 
 From the MTA data, the other half of the group was able to identify the following 20 subway stations to be of interest according to their analysis:
 
-![](/public/SubwayStations.jpeg)
+![](/public/Project_Benson/SubwayStations.jpeg)
 
 #### Gender Distribution  
 
 
-![](/public/GenderDistMap.jpeg)
+![](/public/Project_Benson/GenderDistMap.jpeg)
 
 
 #### Starbucks  
@@ -57,7 +66,7 @@ From the MTA data, the other half of the group was able to identify the followin
 
 From web scraping this article: [Top 21 Tech Companies] we were able to generate a list of 21 tech companies that we wanted to target in New York City. Utilizing the tech company names as key words to search on, we utilized the Google Maps and Google Places APIs to cross reference if locations existed in NYC and used the geocoordinates to generate the following map:
 
-![](/public/TechMap.jpeg)
+![](/public/Project_Benson/TechMap.jpeg)
 
 
 [Top 21 Tech Companies]: http://www.businessinsider.com/amazon-google-apple-most-valuable-tech-brands-america-2018-6
