@@ -8,13 +8,11 @@ Or the lunch spot you are at is offering a new special with an ingredient that y
 
 Is the restaurant trying to upcharge you on things like decor or reputation, or that the components of the dish actually justify that price? What if you had a model that could you help predict the likelihood of that?
 
+![](/public/Project_Luther/sushiburrito.jpg)
 <center>
-  <figure>
-      ![](/public/Project_Luther/sushiburrito.jpg)
-      <font size="2">
-      <figcaption> **$15** for a sushi burrito??? </figcaption>
-      </font>
-  </figure>
+    <font size="2">
+    <figcaption> **$15** for a sushi burrito??? </figcaption>
+    </font>
 </center>
 
 
@@ -54,13 +52,11 @@ I was curious to see if there was any correlation between dish price and the nei
 
 [US Census]: https://www.census.gov/
 
+![](/public/Project_Luther/zipcodemap.jpg)
 <center>
-  <figure>
-      ![](/public/Project_Luther/zipcodemap.jpg)
-      <font size="2">
-      <figcaption> There are over 20 zipcodes within just San Francisco </figcaption>
-      </font>
-  </figure>
+    <font size="2">
+    <figcaption> There are over 20 zipcodes within just San Francisco </figcaption>
+    </font>
 </center>
 
 
