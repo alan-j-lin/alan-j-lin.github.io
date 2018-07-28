@@ -11,12 +11,11 @@ Is the restaurant trying to upcharge you on things like decor or reputation, or 
 ![](/public/Project_Luther/sushiburrito.jpg)
 <center>
     <font size="2">
-    <figcaption> **$15** for a sushi burrito??? </figcaption>
+    <figcaption> <b>$15 for a sushi burrito???</b> </figcaption>
     </font>
 </center>
 
-
-</b>
+<br>
 
 
 I decided to design this model for my 2nd Metis project, where I would utilize linear regression to predict the price of a lunch dish based on the information that one could gather from the restaurant menu.
@@ -55,7 +54,7 @@ I was curious to see if there was any correlation between dish price and the nei
 ![](/public/Project_Luther/zipcodemap.jpg)
 <center>
     <font size="2">
-    <figcaption> There are over 20 zipcodes within just San Francisco </figcaption>
+    <figcaption> <b> There are over 20 zipcodes within just San Francisco </b> </figcaption>
     </font>
 </center>
 
