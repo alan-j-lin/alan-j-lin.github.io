@@ -3,10 +3,7 @@ layout: post
 title: Is That New Lunch Spot Overpriced?
 ---
 
-How many times have you gotten a restaurant recommendation where after sitting down and looking at the menu everything is significantly more expensive than what you had expected?
-Or the lunch spot you are at is offering a new special with an ingredient that you don't quite recognize, is it even worth trying?
-
-Is the restaurant trying to upcharge you on things like decor or reputation, or that the components of the dish actually justify that price? What if you had a model that could you help predict the likelihood of that?
+How many times have you gone to a new restaurant where every dish seems overpriced? Consider when your regular lunch spot is offering a new special, is it even worth trying? Are restaurants trying to upcharge you on things like decor or reputation? What if you had a model that could you help predict the likelihood of that?
 
 ![](/public/Project_Luther/sushiburrito.jpg)
 <center>
@@ -86,7 +83,7 @@ With the restaurant text gathered, there was flexibility in feature generation u
 
 ## Model Selection
 
-As price was what my model's target variable, the parameter I decided to optimize for was **[RMSE]** (root mean square error). RMSE was the appropriate metric because the RMSE value would be translated as the standard error for any predicted price. As an example, if my model had a test RMSE of $2.00 and the predicted price was $4.00 that would mean my price prediction would be $4.00 +/- $2.00
+As price was what my model's target variable, the parameter I decided to optimize for was **[RMSE]** (root mean square error). RMSE was the appropriate metric because the RMSE value would be translated as the standard error for any predicted price. As an example, if my model had a test RMSE of $2.00 and the predicted price was $4.00 that would mean my price prediction would be $4.00 ± $2.00
 
 In trying to improve my RMSE there were a couple of modifications that I did to my base linear regression model:
 
