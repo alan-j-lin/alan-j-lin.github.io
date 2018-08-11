@@ -3,11 +3,11 @@ layout: post
 title: Modeling Chance: Stealing Bases
 ---
 One of the most exciting things that can occur in sports is when a baserunner attempts to steal a base. There are two outcomes, if the base runner times it properly they are able to easily steal a base and help advance the team's scoring chances:  
-![](base steal gif)  
+![](/public/Project_McNulty/successful_steal.gif)  
 or they get caught and it's a wasted opportunity:   
-![](base fail gif)  
-Sometimes even something amazing can happen, look at this play by Jason Werth:  
-![](jason werth gif)  
+![](/public/Project_McNulty/caught_stealing.gif)  
+Sometimes even something amazing can happen, look at this play by Jayson Werth:  
+![](/public/Project_McNulty/jaysonwerth_steal.gif)  
 
 At heart of base stealing though is that it is a calculated gamble, it is highly dependent on the game situation whether or not stealing a base would be a good idea. It relies on decades of experience playing high level baseball and requires sound judgement from both the base runner and their manager. However, what if you could transform this subjective judgment to something that is more objective? Thus, I thought that with enough data I could build a model that could aid in this decision:
 
@@ -45,10 +45,10 @@ From a baserunner's point of view this would be information that would be great 
 how much time the runner would have to reach the next base. However in the real world this information would not be available
 to the runner or manager, instead they would have to guess based on past behavior the expected pitch that the pitcher would deliver. To mimic this, instead of using those three features I joined my dataset with player statistics from [Fangraphs]. Specifically I utilized the pitcher [pitch type distribution statistics] as a proxy for the pitch type and velocity, while the hitter [plate discipline statistics] was a proxy for pitch location.
 
-[Kaggle]: kaggle.com/baseball
-[Fangraphs]: fangraphs.com
-[pitch type distribution statistics]: fangraphs.com
-[plate discipline statistics]: fangraphs.com
+[Kaggle]: https://www.kaggle.com/sportradar/baseball
+[Fangraphs]: https://www.fangraphs.com/
+[pitch type distribution statistics]: https://www.fangraphs.com/leaders.aspx?pos=all&stats=pit&lg=all&qual=y&type=4&season=2015&team=0
+[plate discipline statistics]: https://www.fangraphs.com/leaders.aspx?pos=all&stats=bat&lg=all&qual=y&type=5&season=2015&month=0&season1=2015&ind=0&team=0&rost=0&age=0&filter=&players=0
 
 ### Data Cleaning:
 
@@ -110,7 +110,7 @@ Retraining my model on the full data set, I was able to then generate the follow
 
 With a final F1 score of 0.9354, the model performance ended up right between the training and test F1 scores. In addition, one way to interpret this model would be that for the 922 CS (caught stealing) events that it was able to classify, a ballpark figure of number of runs it could have possibly saved would be approximately 123. I came to this number by translating the game situation where each of the steals were attempted and relating it to an expected runs [table].
 
-[table]: expectedruns
+[table]: https://www.nssl.noaa.gov/users/brooks/public_html/feda/datasets/expectedruns.html
 
 ## Future Improvements:
 
