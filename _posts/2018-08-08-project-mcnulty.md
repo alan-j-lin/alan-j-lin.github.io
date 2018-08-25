@@ -135,9 +135,9 @@ With a final F1 score of 0.9354, the model performance ended up right between th
 
 With this model I also ended up building an interactive Flask app that would do predictions based on user selected inputs as shown:
 
-![](/public/Project_McNulty/BaseballApp_video.mov)
+![](/public/Project_McNulty/app.gif)
 
-If you would like to play with it yourself you can access it [here]:
+If you would like to play with it yourself you can access it [here]:  
 
 [here]: https://agile-stream-33883.herokuapp.com/
 
