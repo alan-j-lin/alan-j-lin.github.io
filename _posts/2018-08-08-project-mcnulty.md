@@ -2,6 +2,7 @@
 layout: post
 title: Modeling Chance: Stealing Bases
 ---
+
 One of the most exciting things in baseball is the base steal. There are two outcomes, if the base runner times it properly:  
 ![](/public/Project_McNulty/successful_steal.gif)  
 or they don't:   
