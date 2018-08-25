@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Modeling Chance: Stealing Bases
+title: Should you go for it? A base steal predictor for the MLB
 ---
 
 One of the most exciting things in baseball is the base steal. There are two outcomes, if the base runner times it properly:  
