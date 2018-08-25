@@ -30,9 +30,9 @@ by just doing a wildcard search for 'steal' in the descriptions:
   WHERE description LIKE '%steal%';
 ```
 
-However this query was too small as it only returned 500 entries. As an example, from the 2017 MLB season there were:  
+However this query was too small as it only returned 500 entries. As an example, the top 10 teams leading the 2017 MLB season in stolen bases had totals of:  
 
-
+![](/public/Project_McNulty/2017_basesteals.png)
 
 So only 500 entires would be too low. Digging deeper, I discovered that multiple base stealing events were missing information in their descriptions. Thus, I ended up querying the steal events by using:
 
