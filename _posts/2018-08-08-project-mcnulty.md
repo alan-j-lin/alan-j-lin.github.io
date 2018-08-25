@@ -76,10 +76,7 @@ Besides subsetting there were entries where the pitcher or hitter stats were mis
 
 With the large number of categorical variables, I ended up having to dummify a lot of features to make them interpretable to my models. In doing so, I made sure to not fall for the [dummy variable trap] (DVT). For instance, to determine the handedness of a hitter I created one column 'is_hitter_R' instead of two as that would fall into the DVT for this data set (there was only one hitter that was ambidextrous).
 
-The other type of feature engineering that I utilized involved box-cox transformations. Many of the player statistic features were not normally distributed and tightly grouped, so to rectify that I applied a box-cox transformation. Box-cox transformations have the following form:  
-
-
-Each feature was transformed with their corresponding optimized lambda, as an example:  
+The other type of feature engineering that I utilized involved box-cox transformations. Many of the player statistic features were not normally distributed and tightly grouped, so to rectify that I applied a box-cox transformation where each feature was transformed with an optimized lambda.
 
 
 [dummy variable trap]: https://en.wikipedia.org/wiki/Dummy_variable_(statistics)
