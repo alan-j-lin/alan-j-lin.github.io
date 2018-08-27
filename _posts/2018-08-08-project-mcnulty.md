@@ -135,7 +135,7 @@ With this model I also ended up building an interactive Flask app that would do 
 
 ![](/public/Project_McNulty/app.gif)
 
-If you would like to play with it yourself you can access it [here]:  
+If you would like to play with it yourself you can access it [here].
 
 [here]: https://agile-stream-33883.herokuapp.com/
 
