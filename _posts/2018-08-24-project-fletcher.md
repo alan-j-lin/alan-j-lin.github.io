@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Yelp Feature I want
+title: A Feature I believe Yelp is Missing
 ---
 
 If you have ever been out for drinks in the financial district of San Francisco, you may have stumbled across [Mikkeller bar]. This dutch beer hall is a great place for conversation with friends after work with an atmosphere that is just lively enough that it good for conversation. With an expansive draft list and selection of sours, it is the type of place that I want to always drink at.
@@ -89,4 +89,30 @@ After all of the data processing I ended up with a subsetted set of data that co
 
 ### Topic Modeling
 
-As I felt that the ambience of bar was a very important feature to capture, I thought that analyze the reviews for each bar by using NLP techniques would be a good approach to accomplish that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up with a combination of CountVectorizer and LDA giving me the most interpretability. I believe that CountVectorizer performed better than TFIDF because important words to describe a bar (i.e. beer, music, drinks) would show up consistently and CountVectorizer ended up promoting those words while TFIDF penalized them. 
+As I felt that the ambience of bar was a very important feature to capture, I thought that analyze the reviews for each bar by using NLP techniques would be a good approach to accomplish that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up with a combination of CountVectorizer and Latent Dirichlet Allocation (LDA) giving me the most interpretability. Before passing the individual words into the CountVectorizer I did lemmatize each word and the CountVectorizer did count both unigrams and bigrams. (Talk about removing stop words) I believe that CountVectorizer performed better than TFIDF because important words to describe a bar (i.e. beer, music, drinks) would show up consistently and CountVectorizer ended up promoting those words while TFIDF penalized them. By using LDA I was able to perform topic modeling and generated 9 topics that I felt were indicative of different types of bars in my dataset:
+
+![](/public/Project_Fletcher/topic_table.png)
+
+2 of the bar archetypes ended up being the most descriptive (Outdoor and Brunch) as most of the bars ended up being described by those two topics. This could be demonstrated by how those two topics mapped to the TSNE plots:
+
+![](/public/Project_Fletcher/TSNE_outdoor.png)
+
+![](/public/Project_Fletcher/TSNE_brunch.png)
+
+The rest of the 7 topics ended up being more specific as they generally described a few bars in the dataset. For example the cigar lounge bar ended up being mapped to my TSNE plot as follows:
+
+![](/public/Project_Fletcher/TSNE_cigar.png)
+
+### Categorical Features
+
+* Yelp dataset contained a lot of categorical features like whether a bar was good for dancing or if they had a television available, however I decided not to utilize any of those features as I wanted to determine those characteristics through the topic modeling. The only categorical feature I ended up taking from the dataset was the price range of the business.
+
+* While the topic modeling would hopefully give me insight on the ambience of a bar, I wanted my model to focus on other aspects of a successful bar as well namely the types of alcohol. To accomplish this, I decided to try to amplify the presence of certain keywords as they were detected in the reviews. For example, for each bar I detected the number of times the token "whiskey" was mentioned. Dividing that count by the number of total reviews, I could then utilize that proportion to signal how much of a whiskey bar a given bar was as I believe that the more times whiskey was mentioned, the larger focus that bar had on whiskey. I ended up doing this presence type categorical feature on the keywords: whiskey, vodka, beer, wine, tequila, rum, shot, gin, brandy, soju, cider, and sake.
+
+## Recommendation Engine
+
+### Giving recommendations
+
+* The way that a recommendation was given was by comparing the cosine similarity for the given bar to all the other bars in the dataset.
+
+* Recommendation engine was deployed on a Flask app that can be found [here].
