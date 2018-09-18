@@ -26,7 +26,7 @@ For this project, I ended up getting my data from the [Yelp challenge dataset]. 
 
 [Yelp challenge dataset]: https://www.yelp.com/dataset/challenge
 
-### Data Processing:
+### Data Filtering:
 
 After loading my data into mongo, my first step for data processing was to filter the list of businesses for only bars. My first approach (using [pymongo]) was to perform a regex to match for any bar that contained the word "Bars" in its category type. I also only filtered for bars that had at least 50 reviews as I assumed that would be enough text data to get some inferences:
 
@@ -85,11 +85,35 @@ After all of the data processing I ended up with a subsetted set of data that co
 
 [pymongo]: https://api.mongodb.com/python/current/
 
+### Text Processing
+
+After I had the data filtered, I still had to process the review text itself before passing it to a tokenizer. There were three things that I did:
+
+1. Remove numbers and punctuation by using regex
+2. Convert all case types to lowercase
+3. Lemmatize all words
+
+[Lemmatization] in particular was important because I didn't want the model to treat different forms of the same word differently. Lemmatizing each word helps with that as it returns the word's lemma or "dictionary form" so plurals or participial forms of a given word would be replaced with the base form. For example, the lemma of "walking" would be "walk" and the lemma of "better" would be "good".
+
+[Lemmatization]: https://en.wikipedia.org/wiki/Lemmatisation
+
 ## Feature Engineering
+
+As I felt that the ambience of bar was a very important feature to capture, I thought that analyze the reviews for each bar by using NLP techniques would be a good approach to accomplish that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up with a combination of CountVectorizer and Latent Dirichlet Allocation (LDA) giving me the most interpretability.
+
+### Vectorization
+
+* Generate list of stop words beside base set of english words
+* Included all location related words to stop words list as I wanted my recommender to be location agnostic
+* Included all food related words to stop words list as Yelp is a food-related website. This was a bar recommender so didn't want food to be a differentiator
+* CountVectorizer included both the unigrams and bigrams of tokens.
+
+I believe that CountVectorizer performed better than TFIDF because important words to describe a bar (i.e. beer, music, drinks) would show up consistently and CountVectorizer ended up promoting those words while TFIDF penalized them.
+
 
 ### Topic Modeling
 
-As I felt that the ambience of bar was a very important feature to capture, I thought that analyze the reviews for each bar by using NLP techniques would be a good approach to accomplish that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up with a combination of CountVectorizer and Latent Dirichlet Allocation (LDA) giving me the most interpretability. Before passing the individual words into the CountVectorizer I did lemmatize each word and the CountVectorizer did count both unigrams and bigrams. (Talk about removing stop words) I believe that CountVectorizer performed better than TFIDF because important words to describe a bar (i.e. beer, music, drinks) would show up consistently and CountVectorizer ended up promoting those words while TFIDF penalized them. By using LDA I was able to perform topic modeling and generated 9 topics that I felt were indicative of different types of bars in my dataset:
+By using LDA I was able to perform topic modeling and generated 9 topics that I felt were indicative of different types of bars in my dataset:
 
 ![](/public/Project_Fletcher/topic_table.png)
 
