@@ -5,15 +5,15 @@ title: Using LDA to build a missing Yelp feature
 
 If you have ever been out for drinks in the financial district of San Francisco, you may have stumbled across [Mikkeller bar]. This Dutch beer hall is a great place to go with friends after work with an atmosphere that is just lively enough for great conversation. With an expansive draft list and selection of sours, it is the type of place that I want to always drink at.
 
-Now, if I looked up Mikkeller on Yelp I would not only get the bar itself but bars of a similar profile that are in the area. These additional options are very useful as I might not always want to go to Mikkeler, but would want to try a different place that has a similar vibe.
+Now, if I looked up Mikkeller on Yelp I would not only get the bar itself but bars of a similar profile that are in the area which is great if I wanted to try a place that had a similar vibe.
 
 ![](/public/Project_Fletcher/mikkeller_sf.png)
 
-However this type of search does not translate when Yelp is trying to base its search on a different location. For instance, if I tried to search for Mikkeller bar in Chicago:
+However this type of search does not translate when you search at a different location. For instance, if I tried to search for Mikkeller bar in Chicago:
 
 ![](/public/Project_Fletcher/mikkeller_chicago.png)
 
-While you could possibly get similar results by searching for specific keywords like beer hall or gastropub, I felt that such a more specific bar search method could be implemented. Why is it that Yelp does not have a feature where the user could provide inputs on bars that they enjoy, and then expand on that search at a location of the user's choosing? This search method would  also be able to capture less tangible aspects like ambience. Therefore I decided that for my 4th [Metis] project, I would build this feature using unsupervised learning and NLP techniques.
+While you could possibly get similar results by searching for specific keywords like beer hall or gastropub, I felt that a more specific search method should be implemented. Why is it that Yelp does not have a feature where the user could provide inputs on bars that they enjoy, and then expand on that search at a location of the user's choosing? This search method would also be able to capture less tangible aspects like ambience. Therefore I decided that for my 4th [Metis] project, I would build this feature using unsupervised learning and NLP techniques.
 
 [Mikkeller bar]: https://www.yelp.com/biz/mikkeller-bar-san-francisco
 [Metis]: https://www.thisismetis.com/
@@ -22,7 +22,7 @@ While you could possibly get similar results by searching for specific keywords 
 
 ### Data Sources:
 
-For this project, I ended up getting my data from the [Yelp challenge dataset]. A publicly available set of data for students to do research on, this was an invaluable resource as Yelp's TOS is very anti-webscraping. The dataset itself was huge as there was over 6 million reviews for 800,000+ different businesses, spread out over 10 different metropolitan areas in the US and Canada. So much geographic diversity was a bonus for my project as I wanted it to be location agnostic. The data from Yelp was stored in .json format so I queried and filtered the data using a local MongoDB instance. In retrospect as the .json files were massive (the review text JSON was 4.72 GB), analyzing data for this project would have been more efficient if I had transferred everything to a large memory AWS instance. The 8 GB of RAM that my Macbook Air was not quite adequate enough to run analysis on the data without micromanaging computer resources.
+For this project, I ended up getting my data from the [Yelp challenge dataset]. A publicly available dataset provided by Yelp, this was an invaluable resource as Yelp's TOS is very anti-webscraping. The dataset itself was huge as there was over 6 million reviews for 800,000+ different businesses, spread out over 10 different metropolitan areas in the US and Canada. So much geographic diversity was a bonus for my project as I wanted it to be location agnostic. The data from Yelp was stored in .json format so I queried and filtered the data using a local MongoDB instance. In retrospect as the .json files were massive (the review text JSON was 4.72 GB), analyzing data for this project would have been more efficient if I had transferred everything to a large memory AWS instance. The 8 GB of RAM that my Macbook Air has was not quite adequate enough to run analysis on the data without micromanaging computer resources.
 
 [Yelp challenge dataset]: https://www.yelp.com/dataset/challenge
 
@@ -99,7 +99,7 @@ After I had the data filtered, I still had to process the review text itself bef
 
 ## Feature Engineering
 
-As I felt that the ambience of a bar was important, I thought that analyzing the reviews for each bar by using NLP techniques would allow me to capture that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up utilizing a combination of count vectorization and Latent Dirichlet Allocation (LDA) to give me the most interpretability.
+The ambience of a bar I feel is very important, therefore I used NLP on the user reviews to capture a proxy of that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up utilizing a combination of count vectorization and Latent Dirichlet Allocation (LDA) to give me the most interpretability.
 
 ### Vectorization
 
@@ -125,13 +125,13 @@ The rest of the 7 topics ended up being more specific as they generally describe
 
 In addition to the NLP generated features, there were some valuable categorical features added to the model. The Yelp dataset actually contained many categorical features: i.e. whether or not a place was good for dancing or if they had a television available. However I decided not to utilize any of those features as I wanted to determine proxies for those characteristics through topic modeling. Thus, the only categorical feature I ended up taking directly from the dataset was the price range of the business.
 
-While the topic modeling would hopefully give me insight on the ambience of a bar, I wanted my model to focus on the type of alcohol the bar primarily served too. To accomplish this, I decided to try to amplify the presence of certain keywords in the reviews. For example, for each bar I detected the number of times the token "whiskey" was mentioned. Dividing that count by the number of total reviews, I have a proportion that signaled how much of a whiskey bar a given bar was. I ended up creating these presence type categorical features on the keywords: whiskey, vodka, beer, wine, tequila, rum, shot, gin, brandy, soju, cider, and sake.
+While the topic modeling gave me insight on the ambience of a bar, I also wanted my model to focus a bar's primary alcohol type. To accomplish this, I decided to amplify the presence of certain keywords in the reviews. For example, for each bar I detected the number of times the token "whiskey" was mentioned. Dividing that count by the number of total reviews, I have a proportion that signaled how much of a whiskey bar a given bar was. I ended up creating these presence type categorical features on the keywords: whiskey, vodka, beer, wine, tequila, rum, shot, gin, brandy, soju, cider, and sake.
 
 ## Recommendation Engine
 
 ### Giving recommendations
 
-With the features established, I created a pipeline to generate features for each of the bars in my dataset. A recommendation could then be given by comparing the [cosine similarity] of an input bar against all the other bars in the dataset. If there were multiple bars given as input, the cosine similarity of the averaged vector of the input bars was what was used. This similarity comparison formed the basis of my recommendation engine. Based off the dataset these were some of the possible recommendations:
+With the features established, I created a pipeline to generate features for each of the bars in my dataset. A recommendation was given by comparing the [cosine similarity] of an input bar against all the other bars in the dataset. If there were multiple bars given as input, the cosine similarity of the averaged vector of the input bars was what was used. This similarity comparison formed the basis of my recommendation engine. Based off the dataset these were some of the possible recommendations:
 
 ![](/public/Project_Fletcher/recommendation1.png)
 
