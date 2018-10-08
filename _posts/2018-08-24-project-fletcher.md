@@ -1,19 +1,19 @@
 ---
 layout: post
-title: A Feature I believe Yelp is Missing
+title: Using LDA to build a missing Yelp feature
 ---
 
-If you have ever been out for drinks in the financial district of San Francisco, you may have stumbled across [Mikkeller bar]. This dutch beer hall is a great place for conversation with friends after work with an atmosphere that is just lively enough that it good for conversation. With an expansive draft list and selection of sours, it is the type of place that I want to always drink at.
+If you have ever been out for drinks in the financial district of San Francisco, you may have stumbled across [Mikkeller bar]. This Dutch beer hall is a great place to go with friends after work with an atmosphere that is just lively enough for great conversation. With an expansive draft list and selection of sours, it is the type of place that I want to always drink at.
 
-Now, if I looked up Mikkeller on Yelp I would not only get the bar itself but bars of a similar profile that are in the area. These additional options are very useful as I might not always be in the mood to go back to Mikkeler, but would want to try a different place that has a similar vibe.
+Now, if I looked up Mikkeller on Yelp I would not only get the bar itself but bars of a similar profile that are in the area. These additional options are very useful as I might not always want to go to Mikkeler, but would want to try a different place that has a similar vibe.
 
 ![](/public/Project_Fletcher/mikkeller_sf.png)
 
-However this type of search does not translate when Yelp is trying to base its search on a different location. For instance, I tried to search for Mikkeller bar in Chicago and got results that did not look similar.
+However this type of search does not translate when Yelp is trying to base its search on a different location. For instance, if I tried to search for Mikkeller bar in Chicago:
 
 ![](/public/Project_Fletcher/mikkeller_chicago.png)
 
-Why is it that Yelp that does not have a feature where the user could input a specific bar or list of bars that they enjoy, and have Yelp expand its search to find bars that are similar to the input at a location of the user's choosing? While you could get by searching for specific keywords like beer hall or gastropub, I felt that this search method could be more specific because part of the reason why people enjoy bars beyond their alcohol selection are more subjective things like ambience. Therefore I decided that for my 4th [Metis] project, I would try to implement this feature using unsupervised learning and NLP techniques.
+While you could possibly get similar results by searching for specific keywords like beer hall or gastropub, I felt that such a more specific bar search method could be implemented. Why is it that Yelp does not have a feature where the user could provide inputs on bars that they enjoy, and then expand on that search at a location of the user's choosing? This search method would  also be able to capture less tangible aspects like ambience. Therefore I decided that for my 4th [Metis] project, I would build this feature using unsupervised learning and NLP techniques.
 
 [Mikkeller bar]: https://www.yelp.com/biz/mikkeller-bar-san-francisco
 [Metis]: https://www.thisismetis.com/
@@ -22,13 +22,13 @@ Why is it that Yelp that does not have a feature where the user could input a sp
 
 ### Data Sources:
 
-For this project, I ended up getting my data from the [Yelp challenge dataset]. A publicly available set of data for students to do research on, this was an invaluable resource as Yelp's TOS is not very accepting of webscraping. The dataset itself was huge as there was over 6 million reviews for 800,000+ different businesses spread out over 10 different metropolitan areas in the US and Canada. The fact that there was so much geographic diversity was a bonus for my project as I wanted it to be location agnostic. The data from Yelp was stored in .json format so I ended up querying and filtering the data using a local MongoDB instance. In retrospect as the .json files were massive (the review .json was 4.72 GB), analyzing data for this project would have been much more efficient if I had transferred everything to a large memory AWS instance. The 8 GB of RAM that my Macbook Air has proved to be not quite adequate enough to run analysis on the data without micromanaging computer resources.
+For this project, I ended up getting my data from the [Yelp challenge dataset]. A publicly available set of data for students to do research on, this was an invaluable resource as Yelp's TOS is very anti-webscraping. The dataset itself was huge as there was over 6 million reviews for 800,000+ different businesses, spread out over 10 different metropolitan areas in the US and Canada. So much geographic diversity was a bonus for my project as I wanted it to be location agnostic. The data from Yelp was stored in .json format so I queried and filtered the data using a local MongoDB instance. In retrospect as the .json files were massive (the review text JSON was 4.72 GB), analyzing data for this project would have been more efficient if I had transferred everything to a large memory AWS instance. The 8 GB of RAM that my Macbook Air was not quite adequate enough to run analysis on the data without micromanaging computer resources.
 
 [Yelp challenge dataset]: https://www.yelp.com/dataset/challenge
 
 ### Data Filtering:
 
-After loading my data into mongo, my first step for data processing was to filter the list of businesses for only bars. My first approach (using [pymongo]) was to perform a regex to match for any bar that contained the word "Bars" in its category type. I also only filtered for bars that had at least 50 reviews as I assumed that would be enough text data to get some inferences:
+After loading my data into MongoDB, my first step for data processing was to filter the list of businesses for bars only. My first approach (using [pymongo]) was to perform a regex, matching any business that had "Bars" in its category type. "Bars" also had to have at least 50 reviews as so that there would be enough text data to draw inferences:
 
 ```
 # Create subset of business that contain bars in question
@@ -39,7 +39,7 @@ db.business.aggregate([
 
 ```
 
-This approach did ending up decreasing the number of businesses to search through from 180,000+ to 5000+. However, one quirk I quickly realized was that using this regex approach caused me to not only capture bar types like wine bars or sports bars, but also sushi bars. In order to get around this, I ended up being more restrictive and wrote a two functions to return a business that only contained a specific category (in this case "bars"):
+This approach did ending up decreasing the number of businesses to search through from 180,000+ to 5000+. However, one quirk I quickly realized was that the regex approach not only captured bar types like wine bars or sports bars, but also sushi bars. I ended up being more restrictive and wrote two functions to return a business that only contained a specific category (in this case "bars"):
 
 ```
 def check_for_cat(categories, cat_type):
@@ -67,7 +67,7 @@ def filter_yelplist(locations, cat_type):
 
 This additional filtering gave me about 4000+ bars to work with.
 
-Next, I had to join this list of bars with the reviews for each bar. Normally in a SQL database, this would be accomplish by a simple join command as both the review data and the business data had a business id column. However MongoDB has a NoSQL database structure, so I was not able to accomplish the same thing (I did experiment with the $lookup command but it didn't do exactly what I wanted). I ended up writing the following query to get the relevant data where I would would loop the reviews database and do a match based on whether or not the review's business id was in the list of business ids from the bars subset table.
+Next, I had to join the list of bars with the reviews for each bar. Normally in a SQL database, this would be accomplish by a simple join command. However MongoDB has a NoSQL database structure, so I was not able to do that (I did experiment with the $lookup command). I ended up writing the following query to get the relevant data:
 
 ```
 # Create subset of reviews to only find reviews that contain the bar ids
@@ -81,7 +81,7 @@ db.reviews.aggregate([
 
 ```
 
-After all of the data processing I ended up with a subsetted set of data that contained 4000+ bars that each had at least 50 reviews. In total there were 800,000+ reviews that I could analyze.
+After all of the data processing I ended up with a subset of data that contained 4000+ bars that each had at least 50 reviews. In total there were 800,000+ reviews that I could analyze.
 
 [pymongo]: https://api.mongodb.com/python/current/
 
@@ -93,23 +93,17 @@ After I had the data filtered, I still had to process the review text itself bef
 2. Convert all case types to lowercase
 3. Lemmatize all words
 
-[Lemmatization] in particular was important because I didn't want the model to treat different forms of the same word differently. Lemmatizing each word helps with that as it returns the word's lemma or "dictionary form" so plurals or participial forms of a given word would be replaced with the base form. For example, the lemma of "walking" would be "walk" and the lemma of "better" would be "good".
+[Lemmatization] was important because I didn't want the model to include different forms of the same word. Lemmatizing accomplishes that as it returns the word's lemma or "dictionary form", so plurals and participial forms of a given word are replaced with the base form. For example, the lemma of "walking" would be "walk" and the lemma of "better" would be "good".
 
 [Lemmatization]: https://en.wikipedia.org/wiki/Lemmatisation
 
 ## Feature Engineering
 
-As I felt that the ambience of bar was a very important feature to capture, I thought that analyze the reviews for each bar by using NLP techniques would be a good approach to accomplish that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up with a combination of CountVectorizer and Latent Dirichlet Allocation (LDA) giving me the most interpretability.
+As I felt that the ambience of a bar was important, I thought that analyzing the reviews for each bar by using NLP techniques would allow me to capture that. After experimenting with the different token vectorizers and dimensionality reduction techniques, I ended up utilizing a combination of count vectorization and Latent Dirichlet Allocation (LDA) to give me the most interpretability.
 
 ### Vectorization
 
-* Generate list of stop words beside base set of english words
-* Included all location related words to stop words list as I wanted my recommender to be location agnostic
-* Included all food related words to stop words list as Yelp is a food-related website. This was a bar recommender so didn't want food to be a differentiator
-* CountVectorizer included both the unigrams and bigrams of tokens.
-
-I believe that CountVectorizer performed better than TFIDF because important words to describe a bar (i.e. beer, music, drinks) would show up consistently and CountVectorizer ended up promoting those words while TFIDF penalized them.
-
+In performing vectorization I needed to generate a relevant list of tokens from the review text. While NLTK provides a base set of English stop words to be excluded, there were additional tokens that had to be excluded in the topic generation. The types of tokens that ended up in the exclusion list fell into two categories: location-related and food-related. Location-related tokens were excluded in order to make the model location agnostic, while food-related tokens were excluded so that the topics were focused on the drinks and the ambience. In terms of the type of vectorizer, the CountVectorizer model ended up performing better than TFIDF. I believe that the CountVectorizer performed better than TFIDF because important words to describe a bar (i.e. beer, music, drinks) would show up repeatedly and the CountVectorizer ended up promoted repetition while TFIDF penalized it.
 
 ### Topic Modeling
 
@@ -123,20 +117,43 @@ By using LDA I was able to perform topic modeling and generated 9 topics that I 
 
 ![](/public/Project_Fletcher/TSNE_brunch.png)
 
-The rest of the 7 topics ended up being more specific as they generally described a few bars in the dataset. For example the cigar lounge bar ended up being mapped to my TSNE plot as follows:
+The rest of the 7 topics ended up being more specific as they generally described a few bars in the dataset. For example the arcade and video game bars ended up being mapped to my TSNE plot as follows:
 
-![](/public/Project_Fletcher/TSNE_cigar.png)
+![](/public/Project_Fletcher/TSNE_arcade.png)
 
 ### Categorical Features
 
-* Yelp dataset contained a lot of categorical features like whether a bar was good for dancing or if they had a television available, however I decided not to utilize any of those features as I wanted to determine those characteristics through the topic modeling. The only categorical feature I ended up taking from the dataset was the price range of the business.
+In addition to the NLP generated features, there were some valuable categorical features added to the model. The Yelp dataset actually contained many categorical features: i.e. whether or not a place was good for dancing or if they had a television available. However I decided not to utilize any of those features as I wanted to determine proxies for those characteristics through topic modeling. Thus, the only categorical feature I ended up taking directly from the dataset was the price range of the business.
 
-* While the topic modeling would hopefully give me insight on the ambience of a bar, I wanted my model to focus on other aspects of a successful bar as well namely the types of alcohol. To accomplish this, I decided to try to amplify the presence of certain keywords as they were detected in the reviews. For example, for each bar I detected the number of times the token "whiskey" was mentioned. Dividing that count by the number of total reviews, I could then utilize that proportion to signal how much of a whiskey bar a given bar was as I believe that the more times whiskey was mentioned, the larger focus that bar had on whiskey. I ended up doing this presence type categorical feature on the keywords: whiskey, vodka, beer, wine, tequila, rum, shot, gin, brandy, soju, cider, and sake.
+While the topic modeling would hopefully give me insight on the ambience of a bar, I wanted my model to focus on the type of alcohol the bar primarily served too. To accomplish this, I decided to try to amplify the presence of certain keywords in the reviews. For example, for each bar I detected the number of times the token "whiskey" was mentioned. Dividing that count by the number of total reviews, I have a proportion that signaled how much of a whiskey bar a given bar was. I ended up creating these presence type categorical features on the keywords: whiskey, vodka, beer, wine, tequila, rum, shot, gin, brandy, soju, cider, and sake.
 
 ## Recommendation Engine
 
 ### Giving recommendations
 
-* The way that a recommendation was given was by comparing the cosine similarity for the given bar to all the other bars in the dataset.
+With the features established, I created a pipeline to generate features for each of the bars in my dataset. A recommendation could then be given by comparing the [cosine similarity] of an input bar against all the other bars in the dataset. If there were multiple bars given as input, the cosine similarity of the averaged vector of the input bars was what was used. This similarity comparison formed the basis of my recommendation engine. Based off the dataset these were some of the possible recommendations:
 
-* Recommendation engine was deployed on a Flask app that can be found [here].
+![](/public/Project_Fletcher/recommendation1.png)
+
+![](/public/Project_Fletcher/recommendation2.png)
+
+This recommendation engine was then deployed on Heroku through a Flask app and an interactive Tableau dashboard as shown:
+
+![](/public/Project_Fletcher/app.gif)
+
+If you would like to try out some recommendations yourself you can access the app [here].
+
+[cosine similarity]: www.google.com/cosine_similarity
+[here]: www.app.com
+
+## Future Work
+
+If given more time to extend this project, some improvements that I would have liked to work on:
+
+* **More Relevant Data**: The current dataset did not include bar locations from major metro areas like San Francisco or New York, which I believe would help to create more relevant recommendations
+
+* **Linking Interactive Graphics**: If this feature was actually to be deployed through Yelp or a similar service, I feel that interactive graphics would be a big selling point. Thus, I would have liked to link the Tableau dashboard and the Flask interface so that there was a greater degree of control of the end user.
+
+If you would like to learn more about this project you can find the code and data at my [Github repo].
+
+[Github repo]: https://github.com/alan-j-lin/new_yelp_feature
