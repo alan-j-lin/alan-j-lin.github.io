@@ -144,7 +144,7 @@ This recommendation engine was then deployed on Heroku through a Flask app and a
 If you would like to try out some recommendations yourself you can access the app [here].
 
 [cosine similarity]: www.google.com/cosine_similarity
-[here]: www.app.com
+[here]: https://radiant-sea-47344.herokuapp.com/
 
 ## Future Work
 
